@@ -116,3 +116,14 @@
 **#100 - Cadastrar usuários do sistema**
 * O provisionamento de contas é derivado diretamente do parse do arquivo JSON do SIGAA (ações manuais são restritas ao admin).
 * CPFs/Matrículas devem ser tratados como chave única no banco de dados.
+
+---
+
+## 🔀 Política de Branching
+
+A equipe utilizará a estratégia de ramificação baseada na organização por sprint e divisões individuais. Nenhuma alteração direta deverá ser feita na branch principal.
+
+* **Padrão de nomenclatura das branches:** `bdd-[nome-do-participante]`
+  * *Exemplos:* `bdd-felipe`, `bdd-caio`.
+* **Fluxo de Integração:** Todos os commits de desenvolvimento devem ser feitos em suas respectivas branches individuais. Ao término das implementações, cada desenvolvedor integrará seu código diretamente na branch unificada `sprint-1`.
+* **Pull Request:** Para a entrega, será aberto um Pull Request (PR) no repositório oficial (`EngSwCIC/CAMAAR`), partindo da nossa branch `sprint-1`.
