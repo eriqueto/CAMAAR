@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_06_08_224406) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_09_175156) do
   create_table "discentes", force: :cascade do |t|
     t.string "curso"
     t.string "matricula"
@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_06_08_224406) do
     t.integer "turma_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "nota"
     t.index ["discente_id"], name: "index_turma_discentes_on_discente_id"
     t.index ["turma_id"], name: "index_turma_discentes_on_turma_id"
   end
