@@ -48,7 +48,7 @@ class Admin::TemplatesController < Admin::BaseController
   rescue ActiveRecord::RecordNotFound
     redirect_to admin_templates_path, alert: 'Template não encontrado.'
   end
-
+  
   def template_params
     params.require(:template).permit(
       :nome,
