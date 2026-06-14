@@ -1,14 +1,29 @@
 Dado('que existem os seguintes templates cadastrados no sistema:') do |table|
+  @admin = Pessoa.find_or_create_by!(usuario: "admin_templates") do |p|
+    p.email = "admin_templates@unb.br"
+    p.password = "senha123"
+    p.password_confirmation = "senha123"
+    p.nome = "Administrador de Templates"
+    p.admin = true
+  end
+
   table.hashes.each do |row|
-    Template.create!(titulo: row['titulo'], descricao: row['descricao'])
+    Template.create!(
+      nome: row['titulo'], 
+      pessoa: @admin
+    )
   end
 end
 
 Dado('que estou logado como um usuário Administrador') do
+  visit login_path
+  fill_in 'login', with: @admin.email
+  fill_in 'password', with: "senha123"
+  click_button 'Entrar'
 end
 
 Quando('acesso a página de gerenciamento de templates') do
-  visit templates_path
+  visit admin_templates_path
 end
 
 Então('devo ver uma lista contendo todos os templates cadastrados') do

@@ -35,7 +35,8 @@ Dado('existe um usuário {string} autenticado com perfil de {string}') do |nome_
 end
 
 Dado('o usuário {string} está vinculado institucionalmente ao departamento {string}') do |nome_usuario, nome_departamento|
-  @admin_cic.update!(departamento: nome_departamento)
+  docente_admin = Docente.find_or_create_by!(pessoa: @admin_cic)
+  docente_admin.update!(departamento: nome_departamento)
 end
 
 #-----HAPPY PATH ---
