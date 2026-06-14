@@ -8,7 +8,7 @@ class Admin::ImportsController < Admin::BaseController
     if File.exist?(caminho_classes) && File.exist?(caminho_membros)
       begin
         SigaaImportService.processar(caminho_classes, caminho_membros)
-        redirect_to admin_root_path, notice: "Dados do SIGAA importados e cruzados com sucesso a partir dos arquivos locais!"
+        redirect_to admin_root_path, notice: "Importação de dados concluída com sucesso"
       rescue StandardError => e
         redirect_to new_admin_import_path, alert: "Erro ao processar os arquivos JSON: #{e.message}"
       end
