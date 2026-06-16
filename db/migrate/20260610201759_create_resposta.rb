@@ -1,6 +1,6 @@
 class CreateResposta < ActiveRecord::Migration[7.1]
   def change
-    create_table :resposta do |t|
+    create_table :respostas do |t|
       t.references :questao, null: false, foreign_key: true
       t.references :discente, null: false, foreign_key: true
       t.text :conteudo
