@@ -1,7 +1,16 @@
 class Admin::FormulariosController < Admin::BaseController
   def new
     @templates = Template.all
-    @turmas = Turma.includes(:disciplina, :docente).all 
+    
+    departamento_admin = current_pessoa.docente&.departamento
+    
+    if departamento_admin.present?
+      @turmas = Turma.includes(:disciplina, :docente)
+                     .joins(:docente)
+                     .where(docentes: { departamento: departamento_admin })
+    else
+      @turmas = Turma.includes(:disciplina, :docente).all 
+    end
   end
 
   def create
@@ -11,6 +20,18 @@ class Admin::FormulariosController < Admin::BaseController
     if turmas_ids.blank?
       flash[:alert] = "Você precisa selecionar pelo menos uma turma."
       redirect_to new_admin_formulario_path and return
+    end
+
+    departamento_admin = current_pessoa.docente&.departamento
+    if departamento_admin.present?
+      turmas_invalidas = Turma.joins(:docente)
+                              .where(id: turmas_ids)
+                              .where.not(docentes: { departamento: departamento_admin })
+                              
+      if turmas_invalidas.any?
+        flash[:alert] = "Acesso negado: Você tem permissão para gerenciar apenas as turmas vinculadas ao seu departamento."
+        redirect_to admin_root_path and return
+      end
     end
 
     ActiveRecord::Base.transaction do
