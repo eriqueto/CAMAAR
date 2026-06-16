@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def new
-    redirect_to root_path if logged_in?
+    if logged_in?
+      redirect_to is_admin? ? admin_root_path : avaliacoes_path
+    end
   end
 
   def create
@@ -10,7 +12,7 @@ class SessionsController < ApplicationController
       if pessoa.admin?
         redirect_to admin_root_path
       else
-        redirect_to root_path
+        redirect_to avaliacoes_path
       end
     else
       flash.now[:alert] = "E-mail/Matrícula ou senha inválidos"

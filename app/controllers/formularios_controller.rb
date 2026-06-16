@@ -18,7 +18,7 @@ class FormulariosController < ApplicationController
         )
       end
     end
-    redirect_to root_path, notice: "Avaliação enviada com sucesso! Obrigado pela sua participação."
+    redirect_to avaliacoes_path, notice: "Avaliação enviada com sucesso! Obrigado pela sua participação."
   rescue ActiveRecord::RecordInvalid => e
     redirect_to formulario_path(@formulario), alert: "Os seguintes campos são obrigatórios: #{e.record.errors.full_messages.join(', ')}"
   end
