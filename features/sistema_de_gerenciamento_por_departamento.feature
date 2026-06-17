@@ -21,7 +21,7 @@ Feature: Sistema de gerenciamento por departamento
   @sad_path
   Scenario: Tentativa de acesso direto a uma turma de outro departamento via URL
     Given que a turma de "Cálculo 1" pertence ao departamento "Matemática (MAT)" e possui o ID de sistema "999"
-    When o "Admin_CIC" tenta forçar o acesso digitando diretamente a URL "/admin/turmas/999/avaliacoes"
+    When o "Admin_CIC" tenta forçar o acesso digitando diretamente a URL "/admin/formularios/new"
     Then o sistema deve interceptar a requisição e bloquear o acesso
     And deve redirecionar o usuário para o painel principal do seu departamento
     And exibir a mensagem de erro "Acesso negado: Você tem permissão para gerenciar apenas as turmas vinculadas ao seu departamento."

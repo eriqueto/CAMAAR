@@ -16,6 +16,14 @@ Dado('que existem os seguintes templates cadastrados no sistema:') do |table|
 end
 
 Dado('que estou logado como um usuário Administrador') do
+  @admin ||= Pessoa.find_or_create_by!(usuario: "admin_templates") do |p|
+    p.email = "admin_templates@unb.br"
+    p.password = "senha123"
+    p.password_confirmation = "senha123"
+    p.nome = "Administrador de Templates"
+    p.admin = true
+  end
+
   visit login_path
   fill_in 'login', with: @admin.email
   fill_in 'password', with: "senha123"
