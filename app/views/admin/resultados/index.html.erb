@@ -21,7 +21,7 @@
               <% if formulario.status == 'fechado' %>
                 <%= link_to "Exportar CSV", exportar_csv_admin_resultado_path(formulario), class: "btn-exportar" %>
               <% else %>
-                <span style="color: #888;">Em andamento</span>
+                <span style="color: #888; font-size: 0.9em;">Relatórios só podem ser gerados para avaliações encerradas.</span>
               <% end %>
             </td>
           </tr>

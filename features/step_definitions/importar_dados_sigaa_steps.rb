@@ -80,7 +80,7 @@ Quando('o administrador tenta realizar a importação do arquivo') do
   click_button 'Importar'
 end
 
-Então('o sistema aborta a operacao de atualizacao') do
+Então('o sistema deve bloquear o processamento do arquivo imediatamente') do
   expect([new_admin_import_path, admin_imports_path]).to include(current_path)
 end
 
