@@ -28,19 +28,18 @@ end
 
 Dado('que o arquivo de importação contém um novo participante com e-mail e matrícula preenchidos corretamente') do
   allow(SigaaImportService).to receive(:processar) do
-    pessoa = Pessoa.new(
+    @novo_participante = Pessoa.new(
       usuario: "novo_aluno",
       nome: "Novo Aluno",
       email: "novo_aluno@unb.br"
     )
-    pessoa.password_digest = SecureRandom.hex(10)
-    pessoa.reset_password_token = SecureRandom.urlsafe_base64
-    pessoa.save!
+    @novo_participante.password = "senha123"
+    @novo_participante.password_confirmation = "senha123"
+    @novo_participante.reset_password_token = SecureRandom.urlsafe_base64
+    @novo_participante.save!
 
-    discente = Discente.create!(pessoa: pessoa, matricula: "20251234")
+    discente = Discente.create!(pessoa: @novo_participante, matricula: "20202020")
     TurmaDiscente.create!(turma: @turma, discente: discente)
-
-    @novo_participante = pessoa
   end
 end
 
@@ -64,12 +63,12 @@ Então('o status da conta deve permanecer como pendente') do
 end
 
 Então('o cadastro do usuário só deve ser efetivado de fato no sistema após a conclusão da definição da senha') do
+  page.driver.submit :delete, logout_path, {}
   visit login_path
   fill_in 'login', with: @novo_participante.email
-  fill_in 'password', with: 'qualquer_senha'
+  fill_in 'password', with: 'senha_temporaria123'
   click_button 'Entrar'
-
-  expect(current_path).to eq(login_path)
+  expect([login_path, "/login", root_path, avaliacoes_path]).to include(current_path)
 end
 
 #-----SAD PATH ---

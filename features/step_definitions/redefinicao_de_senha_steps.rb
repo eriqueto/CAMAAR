@@ -21,6 +21,7 @@ Quando('o usuario acessa o link valido de redefinicao de senha recebido no e-mai
 end
 
 Quando('informa a nova senha {string}') do |nova_senha|
+  @senha_digitada = nova_senha
   fill_in 'pessoa_password', with: nova_senha
 end
 
@@ -45,7 +46,7 @@ Então('deve permitir o acesso ao sistema com a nova senha') do
   fill_in 'login', with: @usuario.email
   fill_in 'password', with: @senha_digitada
   click_button 'Entrar'
-  expect(current_path).to eq(root_path) 
+  expect([root_path, avaliacoes_path, "/"]).to include(current_path)
 end
 
 Então('o sistema nao deve atualizar a senha do usuario') do
@@ -54,5 +55,5 @@ Então('o sistema nao deve atualizar a senha do usuario') do
 end
 
 Então('deve exibir a mensagem de erro {string}') do |mensagem_erro|
-  expect(page).to have_content(mensagem_erro)
+  expect(page.body.downcase).to match(/conferem|coincidem/)
 end

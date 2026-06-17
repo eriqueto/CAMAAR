@@ -1,2 +1,9 @@
-<h1>Admin::Imports#new</h1>
-<p>Find me in app/views/admin/imports/new.html.erb</p>
+<div class="admin-panel">
+  <h1>Importar Dados do SIGAA</h1>
+  
+  <p>O sistema processará os arquivos <strong>classes.json</strong> e <strong>class_members.json</strong> que estão armazenados no servidor.</p>
+
+  <div class="admin-actions">
+    <%= button_to "Importar", admin_imports_path, method: :post, class: "btn-admin btn-admin--primary" %>
+  </div>
+</div>

@@ -50,7 +50,6 @@ Quando("eu deixo o campo 'Nome do template:' vazio") do
 end
 
 Quando('adiciono uma questão válida') do
-  click_button '+'
   fill_in 'Enunciado da questão:', with: "O que você achou da disciplina?"
 end
 

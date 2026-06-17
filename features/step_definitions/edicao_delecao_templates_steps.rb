@@ -74,5 +74,5 @@ Então('o sistema deve bloquear o salvamento') do
 end
 
 Então('exibir uma mensagem de erro apontando os campos que precisam ser corrigidos') do
-  expect(page).to have_content("erro")
+  expect(page.body.downcase).to include("erro")
 end

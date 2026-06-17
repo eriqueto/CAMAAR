@@ -3,17 +3,10 @@ class Admin::ImportsController < Admin::BaseController
   end
 
   def create
-    caminho_classes = Rails.root.join('db', 'data', 'classes.json')
-    caminho_membros = Rails.root.join('db', 'data', 'class_members.json')
-    if File.exist?(caminho_classes) && File.exist?(caminho_membros)
-      begin
-        SigaaImportService.processar(caminho_classes, caminho_membros)
-        redirect_to admin_root_path, notice: "Importação de dados concluída com sucesso"
-      rescue StandardError => e
-        redirect_to new_admin_import_path, alert: "Erro ao processar os arquivos JSON: #{e.message}"
-      end
-    else
-      redirect_to new_admin_import_path, alert: "Arquivos não encontrados! Certifique-se de colocar classes.json e class_members.json na pasta db/data/."
-    end
+    SigaaImportService.processar
+    redirect_to admin_root_path, notice: "Importação de dados concluída com sucesso"
+  rescue StandardError => e
+    flash.now[:alert] = "Erro ao processar os arquivos JSON: #{e.message}"
+    render :new, status: :unprocessable_entity
   end
 end

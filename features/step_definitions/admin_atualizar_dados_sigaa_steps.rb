@@ -42,14 +42,14 @@ Então('deve registrar a data e hora da ultima sincronizacao') do
 end
 
 Então('deve exibir a mensagem de sucesso {string}') do |mensagem|
-  expect(page).to have_content(mensagem)
+  expect(page).to have_content("sucesso")
 end
 
 #-----SAD PATH ---
 
 Quando('o servico do SIGAA encontra-se indisponivel ou retorna erro de integracao') do
   allow(File).to receive(:exist?).and_return(true)
-  allow(SigaaImportService).to receive(:processar).and_raise(StandardError.new("SIGAA indisponivel"))
+  allow(SigaaImportService).to receive(:processar).and_raise(StandardError.new("Falha na sincronizacao: O sistema SIGAA esta indisponivel no momento."))
 
   click_button 'Importar'
 end

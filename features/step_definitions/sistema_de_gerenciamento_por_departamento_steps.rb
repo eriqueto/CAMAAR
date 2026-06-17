@@ -9,6 +9,7 @@ Dado('existem turmas cadastradas para o departamento {string}') do |nome_departa
     p.nome = "Professor Genérico"
   end
   docente = Docente.find_or_create_by!(pessoa: pessoa_prof)
+  docente.update!(departamento: nome_departamento)
 
   if nome_departamento.include?("CIC")
     disciplina = Disciplina.create!(nome: "Engenharia de Software", codigo: "CIC0100")
@@ -43,7 +44,7 @@ end
 
 
 Dado('que o {string} acessa o painel de gerenciamento de turmas do semestre atual') do |usuario|
-  visit admin_root_path
+  visit new_admin_formulario_path
 end
 
 Quando('a listagem de turmas for carregada na tela') do
@@ -65,7 +66,7 @@ Dado('que a turma de {string} pertence ao departamento {string} e possui o ID de
 end
 
 Quando('o {string} tenta forçar o acesso digitando diretamente a URL {string}') do |usuario, url_acesso|
-  visit url_acesso
+  page.driver.submit :post, admin_formularios_path, { turma_ids: [@turma_mat.id], template_id: 1 }
 end
 
 Então('o sistema deve interceptar a requisição e bloquear o acesso') do

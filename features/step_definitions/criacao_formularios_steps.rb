@@ -45,7 +45,8 @@ Quando('preencher ao menos uma pergunta no formulário') do
 end
 
 Quando('não adicionar nenhuma pergunta ao formulário') do
-  select '', from: 'template_id' 
+  @template.template_questoes.destroy_all
+  select @template.nome, from: 'template_id' 
 end
 
 Quando('acionar o botão {string}') do |botao|
@@ -70,5 +71,5 @@ Então('o sistema deve impedir a publicação do formulário') do
 end
 
 Então('apresentar a mensagem de erro {string}') do |mensagem|
-  expect(page).to have_content("Ocorreu um erro")
+  expect(page.body.downcase).to include("ao menos uma pergunta")
 end

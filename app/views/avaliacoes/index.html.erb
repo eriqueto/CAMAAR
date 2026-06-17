@@ -50,17 +50,18 @@
 					<% disciplina = formulario.turma.disciplina %>
 					<% docente = formulario.turma.docente %>
 					<% professor_nome = docente&.pessoa&.nome.presence || "Professor" %>
+					
 					<%= link_to formulario_path(formulario), class: "avaliacao-card" do %>
 						<h2><%= disciplina&.nome.presence || "Nome da matéria" %></h2>
-						<p class="avaliacao-card__semester"><%= formulario.turma.semestre.presence || "semestre" %></p>
-						<p class="avaliacao-card__teacher"><%= professor_nome %></p>
+						<p><strong>Avaliação:</strong> <%= formulario.template.nome %></p>
+						<p>Turma: <%= formulario.turma.codigo %> - Semestre: <%= formulario.turma.semestre.presence || "2026.1" %></p>
+						<p>Docente: <%= professor_nome %></p>
 					<% end %>
 				<% end %>
 			</section>
 		<% else %>
 			<section class="avaliacoes-empty">
-				<h1>Nenhuma avaliação disponível</h1>
-				<p>Quando houver formulários abertos para sua turma, eles aparecerão aqui.</p>
+				<p>Voce nao possui formularios pendentes para responder no momento.</p>
 			</section>
 		<% end %>
 	</main>

@@ -9,6 +9,12 @@ class FormulariosController < ApplicationController
   def responder
     @formulario = Formulario.find(params[:id])
     respostas_params = params[:respostas] || {}
+    
+    if respostas_params.blank? || respostas_params.values.any?(&:blank?)
+      redirect_to formulario_path(@formulario), alert: "Erro: Todos os campos obrigatórios precisam ser preenchidos."
+      return
+    end
+
     ActiveRecord::Base.transaction do
       respostas_params.each do |questao_id, conteudo|
         Resposta.create!(
@@ -18,8 +24,8 @@ class FormulariosController < ApplicationController
         )
       end
     end
-    redirect_to avaliacoes_path, notice: "Avaliação enviada com sucesso! Obrigado pela sua participação."
-  rescue ActiveRecord::RecordInvalid => e
-    redirect_to formulario_path(@formulario), alert: "Os seguintes campos são obrigatórios: #{e.record.errors.full_messages.join(', ')}"
+    redirect_to root_path, notice: "Avaliação enviada com sucesso! Obrigado pela sua participação."
+  rescue StandardError => e
+    redirect_to formulario_path(@formulario), alert: "Erro ao enviar avaliação. Tente novamente."
   end
 end

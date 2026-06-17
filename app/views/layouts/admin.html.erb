@@ -56,16 +56,15 @@
 	</header>
 
     <main class="avaliacoes-content">
-		<% if flash[:notice].present? %>
-			<div class="admin-flash admin-flash--notice"><%= flash[:notice] %></div>
-		<% end %>
-
-    	<% if flash[:alert].present? %>
-			<div class="admin-flash admin-flash--alert"><%= flash[:alert] %></div>
-		<% end %>
-
-		<%= yield %>
-	</main>
+        <% if flash[:notice].present? %>
+          <div style="padding: 15px; margin-bottom: 20px; background-color: #d4edda; color: #155724; border-radius: 4px;"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div style="padding: 15px; margin-bottom: 20px; background-color: #f8d7da; color: #721c24; border-radius: 4px;"><%= flash[:alert] %></div>
+        <% end %>
+        
+        <%= yield %>
+      </main>
 	</div>
   </body>
 </html>

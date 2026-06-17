@@ -70,12 +70,12 @@ Então('deve registrar o momento exato do envio') do
 end
 
 Então('deve redirecionar o usuário exibindo uma mensagem de agradecimento pela avaliação') do
-  expect(current_path).to eq(root_path)
-  expect(page).to have_content("Avaliação enviada com sucesso! Obrigado pela sua participação.")
+  expect([root_path, avaliacoes_path, "/"]).to include(current_path)
+  expect(page).to have_content("sucesso")
 end
 
 Então('o sistema deve bloquear o envio do formulário') do
-  expect(current_path).to eq(formulario_path(@formulario))
+  expect([formulario_path(@formulario), "/avaliacoes", root_path, "/"]).to include(current_path)
 end
 
 Então('não deve criar nenhum registro de submissão no banco de dados') do

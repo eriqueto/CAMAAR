@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
         redirect_to avaliacoes_path
       end
     else
-      flash.now[:alert] = "E-mail/Matrícula ou senha inválidos"
+      flash.now[:alert] = "Identificação ou senha inválidos. Verifique suas credenciais e tente novamente."
       render :new, status: :unprocessable_entity
     end
   end

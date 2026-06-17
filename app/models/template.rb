@@ -3,4 +3,5 @@ class Template < ApplicationRecord
   has_many :template_questoes, dependent: :destroy
   has_many :formularios, dependent: :nullify
   accepts_nested_attributes_for :template_questoes, allow_destroy: true
+  validates :nome, presence: true
 end

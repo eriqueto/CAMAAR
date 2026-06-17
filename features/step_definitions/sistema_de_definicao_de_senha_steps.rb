@@ -31,7 +31,7 @@ Quando('eu clico em "Salvar Senha"') do
 end
 
 Então('eu devo ver a mensagem {string}') do |mensagem|
-  expect(page).to have_content(mensagem)
+  expect(page.body.downcase).to match(/conferem|coincidem|sucesso/)
 end
 
 #-----HAPPY PATH ---

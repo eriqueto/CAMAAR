@@ -35,7 +35,7 @@
 					<section class="avaliacao-question-card">
 						<h2><%= questao.enunciado.presence || "Pergunta" %></h2>
 
-						<% if questao.radio? %>
+						<% if questao.try(:radio?) %>
 							<div class="avaliacao-options">
 								<% Array(questao.opcoes).each_with_index do |opcao, index| %>
 									<label class="avaliacao-option">
@@ -46,16 +46,16 @@
 							</div>
 						<% else %>
 							<div class="avaliacao-text-field">
-								<%= text_field_tag "respostas[#{questao.id}]", nil, placeholder: "Placeholder", class: "avaliacao-text-input" %>
+								<%= text_field_tag "respostas[#{questao.id}]", nil, placeholder: "Sua resposta...", class: "avaliacao-text-input" %>
 							</div>
 						<% end %>
 					</section>
 				<% end %>
-			</div>
 
-			<%= button_tag type: :submit, class: "avaliacao-submit-fab", aria: { label: "Enviar avaliação" } do %>
-				<span>&gt;</span>
-			<% end %>
+				<div class="submit-btn-container" style="margin-top: 20px;">
+					<%= submit_tag "Submeter Avaliação", class: "avaliacao-submit" %>
+				</div>
+			</div>
 		<% end %>
 	</main>
 </div>

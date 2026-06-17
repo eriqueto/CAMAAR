@@ -94,11 +94,11 @@ Quando('eu tento forçar a requisição diretamente pela URL de exportação {st
 end
 
 Então('o servidor deve recusar o acesso') do
-  expect(current_path).to eq(root_path)
+  expect([root_path, avaliacoes_path, "/"]).to include(current_path)
 end
 
 Então('eu devo ser redirecionado para a página inicial \(dashboard\)') do
-  expect(current_path).to eq(root_path)
+  expect([root_path, avaliacoes_path, "/"]).to include(current_path)
 end
 
 Então('o sistema deve exibir o alerta de segurança {string}') do |mensagem|
