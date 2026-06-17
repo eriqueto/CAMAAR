@@ -1,34 +1,29 @@
-<div class="admin-panel">
-  <h1>Relatórios Gerenciais</h1>
+<% content_for :page_title, "Gerenciamento - Resultados" %>
 
-  <% if @formularios.any? %>
-    <table class="tabela-formularios">
-      <thead>
-        <tr>
-          <th>Pesquisa</th>
-          <th>Turma</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @formularios.each do |formulario| %>
-          <tr>
-            <td><%= formulario.template.nome %></td>
-            <td><%= formulario.turma.codigo %></td>
-            <td><%= formulario.status.capitalize %></td>
-            <td>
-              <% if formulario.status == 'fechado' %>
-                <%= link_to "Exportar CSV", exportar_csv_admin_resultado_path(formulario), class: "btn-exportar" %>
-              <% else %>
-                <span style="color: #888; font-size: 0.9em;">Relatórios só podem ser gerados para avaliações encerradas.</span>
-              <% end %>
-            </td>
-          </tr>
+<% if @formularios.any? %>
+  <section class="avaliacoes-grid" aria-label="Resultados dos formulários">
+    <% @formularios.each do |formulario| %>
+      <% disciplina = formulario.turma.disciplina %>
+      <% docente = formulario.turma.docente %>
+      <% professor_nome = docente&.pessoa&.nome.presence || "Professor" %>
+
+      <% if formulario.status == "fechado" %>
+        <%= link_to exportar_csv_admin_resultado_path(formulario), class: "avaliacao-card" do %>
+          <h2><%= disciplina&.nome.presence || "Nome da matéria" %></h2>
+          <p class="avaliacao-card__semester"><%= formulario.turma.semestre.presence || "semestre" %></p>
+          <p class="avaliacao-card__teacher"><%= professor_nome %></p>
         <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>Não existem formulários disponíveis para gerar relatórios no momento</p>
-  <% end %>
-</div>
+      <% else %>
+        <div class="avaliacao-card avaliacao-card--inactive">
+          <h2><%= disciplina&.nome.presence || "Nome da matéria" %></h2>
+          <p class="avaliacao-card__semester"><%= formulario.turma.semestre.presence || "semestre" %></p>
+          <p class="avaliacao-card__teacher"><%= professor_nome %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </section>
+<% else %>
+  <section class="avaliacoes-empty">
+    <p>Não existem formulários disponíveis para gerar relatórios no momento.</p>
+  </section>
+<% end %>

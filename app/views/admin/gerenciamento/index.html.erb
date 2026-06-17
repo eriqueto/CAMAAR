@@ -1,3 +1,10 @@
-<section class="admin-home" aria-label="Conteúdo administrativo">
-	<div class="admin-home__placeholder"></div>
+<% content_for :page_title, "Gerenciamento" %>
+
+<section class="admin-gerenciamento" aria-label="Painel de gerenciamento">
+  <div class="admin-gerenciamento__actions">
+    <%= link_to "Importar dados", new_admin_import_path, class: "admin-action-btn" %>
+    <%= link_to "Editar Templates", admin_templates_path, class: "admin-action-btn" %>
+    <%= link_to "Enviar Formulários", new_admin_formulario_path, class: "admin-action-btn" %>
+    <%= link_to "Resultados", admin_resultados_path, class: "admin-action-btn" %>
+  </div>
 </section>

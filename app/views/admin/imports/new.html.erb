@@ -1,9 +1,9 @@
-<div class="admin-panel">
-  <h1>Importar Dados do SIGAA</h1>
-  
-  <p>O sistema processará os arquivos <strong>classes.json</strong> e <strong>class_members.json</strong> que estão armazenados no servidor.</p>
+<% content_for :page_title, "Gerenciamento" %>
 
-  <div class="admin-actions">
-    <%= button_to "Importar", admin_imports_path, method: :post, class: "btn-admin btn-admin--primary" %>
-  </div>
+<div class="import-wrapper">
+  <p class="import-info">
+    O sistema processará os arquivos <strong>classes.json</strong> e <strong>class_members.json</strong>
+    que estão armazenados no servidor.
+  </p>
+  <%= button_to "Importar dados", admin_imports_path, method: :post, class: "admin-action-btn" %>
 </div>

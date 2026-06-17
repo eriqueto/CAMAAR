@@ -955,3 +955,402 @@ body {
 		height: 44px;
 	}
 }
+
+/* ── Admin: Gerenciamento hub ── */
+
+.admin-gerenciamento {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: calc(100vh - 60px);
+}
+
+.admin-gerenciamento__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 220px;
+}
+
+.admin-action-btn {
+	display: block;
+	width: 100%;
+	padding: 10px 0;
+	border: 0;
+	border-radius: 4px;
+	background: #27c45a;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 600;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	font-family: inherit;
+	box-sizing: border-box;
+}
+
+.admin-action-btn:hover {
+	background: #20b252;
+}
+
+/* ── Admin: Template cards ── */
+
+.template-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+	padding: 18px 22px;
+}
+
+.template-card {
+	background: #ffffff;
+	border-radius: 6px;
+	padding: 12px 14px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	min-height: 80px;
+	position: relative;
+}
+
+.template-card__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.template-card__name {
+	margin: 0 0 2px;
+	font-size: 15px;
+	font-weight: 700;
+	color: #111;
+}
+
+.template-card__meta {
+	margin: 0;
+	font-size: 12px;
+	color: #555;
+}
+
+.template-card__menu {
+	position: relative;
+}
+
+.template-card__menu summary {
+	list-style: none;
+	cursor: pointer;
+	font-size: 14px;
+	color: #888;
+	padding: 2px 6px;
+	user-select: none;
+}
+
+.template-card__menu summary::-webkit-details-marker {
+	display: none;
+}
+
+.template-card__dropdown {
+	position: absolute;
+	right: 0;
+	top: calc(100% + 4px);
+	min-width: 110px;
+	background: #fff;
+	border: 1px solid rgba(0,0,0,0.12);
+	box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+	z-index: 20;
+}
+
+.template-card__dropdown .button_to {
+	margin: 0;
+}
+
+.template-card__dropdown-item {
+	display: block;
+	width: 100%;
+	padding: 9px 12px;
+	border: 0;
+	background: transparent;
+	text-align: left;
+	font-size: 13px;
+	color: #1b1b1b;
+	text-decoration: none;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+.template-card__dropdown-item:hover {
+	background: #f2f2f2;
+}
+
+.template-card__dropdown-item--danger {
+	color: #991b1b;
+}
+
+.template-card--new {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	border: 2px dashed #bdbdbd;
+	box-shadow: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.template-card--new:hover {
+	border-color: #7a2d79;
+	background: #faf5fa;
+}
+
+.template-card__plus {
+	font-size: 32px;
+	color: #888;
+	line-height: 1;
+}
+
+.template-card--new:hover .template-card__plus {
+	color: #7a2d79;
+}
+
+@media (max-width: 860px) {
+	.template-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 560px) {
+	.template-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ── Admin: Template form ── */
+
+.template-form__panel {
+	width: min(100%, 420px);
+	margin: 18px auto;
+	background: #ffffff;
+	border-radius: 6px;
+	padding: 18px 16px 16px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+	box-sizing: border-box;
+}
+
+.template-form__field {
+	margin-bottom: 12px;
+}
+
+.template-form__label {
+	display: block;
+	font-size: 13px;
+	color: #333;
+	margin-bottom: 3px;
+}
+
+.template-form__input {
+	width: 100%;
+	border: 0;
+	border-bottom: 1px solid #aaa;
+	outline: none;
+	padding: 4px 0;
+	font-size: 13px;
+	background: transparent;
+	box-sizing: border-box;
+	color: #222;
+}
+
+.template-form__input::placeholder {
+	color: #aaa;
+}
+
+.template-form__select {
+	width: 100%;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 13px;
+	background: #fff;
+	color: #222;
+}
+
+.questao-fields {
+	background: #f0f0f0;
+	border-radius: 4px;
+	padding: 10px 12px;
+	margin-bottom: 10px;
+}
+
+.questao-fields__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.questao-fields__row:last-child {
+	margin-bottom: 0;
+}
+
+.questao-fields__row .template-form__label {
+	min-width: 56px;
+	margin-bottom: 0;
+}
+
+.questao-fields__row .template-form__input,
+.questao-fields__row .template-form__select {
+	flex: 1;
+}
+
+.template-form__add-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	border: 0;
+	background: #27c45a;
+	color: #fff;
+	font-size: 20px;
+	cursor: pointer;
+	margin: 4px auto 12px;
+}
+
+.template-form__add-btn:hover {
+	background: #20b252;
+}
+
+.template-form__actions {
+	text-align: right;
+}
+
+.template-form__submit {
+	padding: 8px 22px;
+	border: 0;
+	border-radius: 4px;
+	background: #27c45a;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.template-form__submit:hover {
+	background: #20b252;
+}
+
+/* ── Admin: Enviar Formulários ── */
+
+.envio-form-wrapper {
+	padding: 18px 22px;
+}
+
+.envio-form {
+	background: #fff;
+	border-radius: 6px;
+	padding: 16px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.envio-form__row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+}
+
+.envio-form__label {
+	font-size: 13px;
+	color: #333;
+}
+
+.envio-form__select,
+.envio-form__input {
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 13px;
+	background: #fff;
+	color: #222;
+}
+
+.envio-form__input--sm {
+	width: 90px;
+}
+
+.envio-turmas-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	margin-bottom: 16px;
+}
+
+.envio-turmas-table th {
+	text-align: left;
+	padding: 6px 10px;
+	border-bottom: 1px solid #e0e0e0;
+	color: #555;
+	font-weight: 600;
+}
+
+.envio-turmas-table td {
+	padding: 7px 10px;
+	border-bottom: 1px solid #f0f0f0;
+	color: #222;
+}
+
+.envio-turmas-table tr:last-child td {
+	border-bottom: 0;
+}
+
+.envio-checkbox__input {
+	accent-color: #7a2d79;
+}
+
+.envio-form__footer {
+	text-align: right;
+}
+
+.envio-form__submit {
+	padding: 8px 22px;
+	border: 0;
+	border-radius: 4px;
+	background: #27c45a;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.envio-form__submit:hover {
+	background: #20b252;
+}
+
+/* ── Admin: Import ── */
+
+.import-wrapper {
+	padding: 32px 22px;
+	text-align: center;
+}
+
+.import-info {
+	font-size: 14px;
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.import-wrapper .admin-action-btn {
+	display: inline-block;
+	width: auto;
+	padding: 10px 32px;
+}
+
+.import-wrapper .button_to {
+	display: inline;
+}
+
+/* ── Admin: inactive result card ── */
+
+.avaliacao-card--inactive {
+	opacity: 0.6;
+	cursor: default;
+}
