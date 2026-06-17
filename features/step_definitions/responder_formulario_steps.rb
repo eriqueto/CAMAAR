@@ -83,5 +83,5 @@ Então('não deve criar nenhum registro de submissão no banco de dados') do
 end
 
 Então('deve exibir uma notificação de erro indicando quais campos obrigatórios precisam ser preenchidos') do
-  expect(page).to have_content("Erro ao enviar avaliação. Tente novamente.")
+  expect(page.body).to include("obrigatórios precisam ser preenchidos")
 end

@@ -55,5 +55,9 @@ Então('o sistema nao deve atualizar a senha do usuario') do
 end
 
 Então('deve exibir a mensagem de erro {string}') do |mensagem_erro|
-  expect(page.body.downcase).to match(/conferem|coincidem/)
+  if mensagem_erro.include?("conferem") || mensagem_erro.include?("coincidem")
+    expect(page.body.downcase).to match(/conferem|coincidem/)
+  else
+    expect(page.body).to include(mensagem_erro)
+  end
 end

@@ -3,20 +3,21 @@ Dado('que os dados do SIGAA para o semestre atual {string} foram sincronizados')
 end
 
 Dado('existem turmas cadastradas para o departamento {string}') do |nome_departamento|
-  pessoa_prof = Pessoa.find_or_create_by!(usuario: "prof_generico") do |p|
+  sufixo = nome_departamento.include?("CIC") ? "cic" : "mat"
+  pessoa_prof = Pessoa.find_or_create_by!(usuario: "prof_#{sufixo}") do |p|
     p.password = "123"
     p.password_confirmation = "123"
-    p.nome = "Professor Genérico"
+    p.nome = "Professor #{sufixo}"
   end
   docente = Docente.find_or_create_by!(pessoa: pessoa_prof)
   docente.update!(departamento: nome_departamento)
 
   if nome_departamento.include?("CIC")
-    disciplina = Disciplina.create!(nome: "Engenharia de Software", codigo: "CIC0100")
-    Turma.create!(codigo: "TA_CIC", disciplina: disciplina, docente: docente)
+    disciplina = Disciplina.find_or_create_by!(codigo: "CIC0100", nome: "Engenharia de Software")
+    Turma.find_or_create_by!(codigo: "TA_CIC", disciplina: disciplina, docente: docente)
   elsif nome_departamento.include?("MAT")
-    disciplina_mat = Disciplina.create!(nome: "Cálculo 1", codigo: "MAT0001")
-    @turma_mat = Turma.create!(codigo: "TA_MAT", disciplina: disciplina_mat, docente: docente)
+    disciplina_mat = Disciplina.find_or_create_by!(codigo: "MAT0001", nome: "Cálculo 1")
+    @turma_mat = Turma.find_or_create_by!(codigo: "TA_MAT", disciplina: disciplina_mat, docente: docente)
   end
 end
 
@@ -66,7 +67,9 @@ Dado('que a turma de {string} pertence ao departamento {string} e possui o ID de
 end
 
 Quando('o {string} tenta forçar o acesso digitando diretamente a URL {string}') do |usuario, url_acesso|
-  page.driver.submit :post, admin_formularios_path, { turma_ids: [@turma_mat.id], template_id: 1 }
+  template = Template.find_or_create_by!(nome: "Template Fantasma", pessoa: @admin_cic)
+  TemplateQuestao.find_or_create_by!(template: template, enunciado: "Q1", tipo_resposta: "texto")
+  page.driver.submit :post, admin_formularios_path, { turma_ids: [@turma_mat.id], template_id: template.id }
 end
 
 Então('o sistema deve interceptar a requisição e bloquear o acesso') do

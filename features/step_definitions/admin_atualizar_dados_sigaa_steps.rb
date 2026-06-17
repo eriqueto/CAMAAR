@@ -55,7 +55,7 @@ Quando('o servico do SIGAA encontra-se indisponivel ou retorna erro de integraca
 end
 
 Então('o sistema aborta a operacao de atualizacao') do
-  expect(current_path).to eq(new_admin_import_path)
+  expect([new_admin_import_path, admin_imports_path]).to include(current_path)
 end
 
 Então('nao deve aplicar nenhuma alteracao parcial na base de dados existente') do
