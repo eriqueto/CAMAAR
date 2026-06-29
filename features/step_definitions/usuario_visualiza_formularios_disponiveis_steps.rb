@@ -1,13 +1,6 @@
 Dado('que o participante esta logado no sistema') do
-  @pessoa = Pessoa.create!(
-    usuario: "participante_avaliacoes",
-    email: "participante_avaliacoes@unb.br",
-    password: "senha123",
-    password_confirmation: "senha123",
-    nome: "Participante Avaliacoes"
-  )
+  @pessoa = Pessoa.create!(usuario: "participante_avaliacoes", email: "participante_avaliacoes@unb.br", password: "senha123", password_confirmation: "senha123", nome: "Participante Avaliacoes")
   @discente = Discente.create!(pessoa: @pessoa, matricula: "20208888")
-
   visit login_path
   fill_in 'login', with: @pessoa.email
   fill_in 'password', with: "senha123"
@@ -15,16 +8,12 @@ Dado('que o participante esta logado no sistema') do
 end
 
 Dado('esta matriculado em pelo menos uma turma ativa no periodo letivo atual') do
-  pessoa_prof = Pessoa.create!(usuario: "prof_avaliacoes_disp", password: "123", password_confirmation: "123", nome: "Professor Avaliacoes")
+  pessoa_prof = Pessoa.create!(usuario: "prof_avaliacoes_disp", email: "prof_avaliacoes_disp@unb.br", password: "123", password_confirmation: "123", nome: "Professor Avaliacoes")
   docente = Docente.create!(pessoa: pessoa_prof)
-
   disciplina = Disciplina.create!(nome: "Estrutura de Dados", codigo: "CIC0004")
   @turma = Turma.create!(codigo: "TA", disciplina: disciplina, docente: docente, semestre: "2026.1")
-
   TurmaDiscente.create!(turma: @turma, discente: @discente)
 end
-
-#-----HAPPY PATH ---
 
 Dado('que existem formularios abertos e ainda nao respondidos para as turmas do participante') do
   admin = Pessoa.find_or_create_by!(usuario: "admin_avaliacoes_disp") do |p|
@@ -34,7 +23,6 @@ Dado('que existem formularios abertos e ainda nao respondidos para as turmas do 
     p.nome = "Admin Avaliacoes Disp"
     p.admin = true
   end
-
   @template = Template.create!(nome: "Avaliação Estrutura de Dados", pessoa: admin)
   @formulario = Formulario.create!(turma: @turma, template: @template, status: :aberto)
 end
@@ -50,8 +38,6 @@ end
 Então('deve permitir que o participante selecione o formulario desejado para iniciar a resposta') do
   expect(page).to have_selector("a[href='#{formulario_path(@formulario)}']")
 end
-
-#-----SAD PATH ---
 
 Dado('que o participante ja respondeu a todos os formularios ou suas turmas nao possuem avaliacoes abertas') do
   Formulario.where(turma: @turma).destroy_all

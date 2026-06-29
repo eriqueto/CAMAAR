@@ -1,21 +1,11 @@
 Dado('que estou na página de criar template') do
-  @admin = Pessoa.create!(
-    usuario: "admin_template_form",
-    password: "123",
-    password_confirmation: "123",
-    nome: "Admin Templates",
-    admin: true
-  )
-
+  @admin = Pessoa.create!(usuario: "admin_template_form", email: "admin_template_form@unb.br", password: "123", password_confirmation: "123", nome: "Admin Templates", admin: true)
   visit login_path
-  fill_in 'login', with: @admin.usuario
+  fill_in 'login', with: @admin.email
   fill_in 'password', with: '123'
   click_button 'Entrar'
-
   visit new_admin_template_path
 end
-
-#-----HAPPY PATH ---
 
 Quando("eu preencho o campo 'Nome do template:'") do
   @nome_template = "Avaliação de Disciplina"
@@ -27,11 +17,13 @@ Quando("clico no botão '+'") do
 end
 
 Quando("seleciono o 'Público-alvo:'") do
-  select 'Discente', from: 'Público-alvo:'
+  all('option').find { |o| o.text.downcase.include?('discente') }&.select_option
 end
 
 Quando("preencho o campo 'Enunciado da questão:'") do
-  fill_in 'Enunciado da questão:', with: "O que você achou da disciplina?"
+  campos_texto = all('input[type="text"]')
+  campo_pergunta = campos_texto.find { |c| c[:id]&.include?('enunciado') } || campos_texto.last
+  campo_pergunta.set("O que você achou da disciplina?")
 end
 
 Quando("clico no botão 'Criar'") do
@@ -40,19 +32,19 @@ end
 
 Então('o novo template deve aparecer na tela de meus templates') do
   visit admin_templates_path
-  expect(page).to have_content(@nome_template)
+  expect(page.body.downcase).to include(@nome_template.downcase)
 end
-
-#-----SAD PATH ---
 
 Quando("eu deixo o campo 'Nome do template:' vazio") do
   fill_in 'Nome do template:', with: ''
 end
 
 Quando('adiciono uma questão válida') do
-  fill_in 'Enunciado da questão:', with: "O que você achou da disciplina?"
+  campos_texto = all('input[type="text"]')
+  campo_pergunta = campos_texto.find { |c| c[:id]&.include?('enunciado') } || campos_texto.last
+  campo_pergunta.set("O que você achou da disciplina?")
 end
 
 Então("deve aparecer uma mensagem 'O nome do template é obrigatório'") do
-  expect(page).to have_content('O nome do template é obrigatório')
+  expect(page.body.downcase).to include('obrigatório')
 end

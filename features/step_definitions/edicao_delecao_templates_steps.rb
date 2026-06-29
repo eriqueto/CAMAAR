@@ -1,6 +1,7 @@
 Dado('que o administrador esteja autenticado no sistema') do
   @admin = Pessoa.create!(
     usuario: "admin_edicao_template",
+    email: "admin_edicao_template@unb.br",
     password: "123",
     password_confirmation: "123",
     nome: "Admin Edicao Templates",
@@ -8,7 +9,7 @@ Dado('que o administrador esteja autenticado no sistema') do
   )
 
   visit login_path
-  fill_in 'login', with: @admin.usuario
+  fill_in 'login', with: @admin.email
   fill_in 'password', with: '123'
   click_button 'Entrar'
 end
@@ -17,7 +18,7 @@ Dado('que exista ao menos um template criado por esse administrador') do
   @template = Template.create!(nome: "Template Original", pessoa: @admin)
   TemplateQuestao.create!(template: @template, enunciado: "Pergunta original?", tipo_resposta: "texto")
 
-  pessoa_prof = Pessoa.create!(usuario: "prof_edicao_template", password: "123", password_confirmation: "123", nome: "Professor Edicao")
+  pessoa_prof = Pessoa.create!(usuario: "prof_edicao_template", email: "prof_edicao_template@unb.br", password: "123", password_confirmation: "123", nome: "Professor Edicao")
   docente = Docente.create!(pessoa: pessoa_prof)
   disciplina = Disciplina.create!(nome: "Algoritmos", codigo: "CIC0003")
   turma = Turma.create!(codigo: "TA", disciplina: disciplina, docente: docente)
@@ -32,8 +33,6 @@ end
 Quando('seleciona um template para editar') do
   visit edit_admin_template_path(@template)
 end
-
-#-----HAPPY PATH ---
 
 Quando('realiza modificações válidas em seu conteúdo') do
   @novo_nome = "Template Atualizado"
@@ -57,8 +56,6 @@ end
 Então('uma mensagem de confirmação deve ser exibida ao administrador') do
   expect(page).to have_content("sucesso")
 end
-
-#-----SAD PATH ---
 
 Quando('substitui informações obrigatórias por dados inválidos ou em branco') do
   fill_in 'Nome do template:', with: ''

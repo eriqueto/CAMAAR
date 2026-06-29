@@ -1,13 +1,6 @@
 Dado('que existe um usuário com perfil de participante logado no sistema') do
-  @pessoa = Pessoa.create!(
-    email: "aluno@unb.br",
-    password: "senha",
-    password_confirmation: "senha",
-    nome: "Aluno Teste",
-    usuario: "123456789"
-  )
+  @pessoa = Pessoa.create!(email: "aluno@unb.br", password: "senha", password_confirmation: "senha", nome: "Aluno Teste", usuario: "123456789")
   @discente = Discente.create!(pessoa: @pessoa)
-
   visit login_path
   fill_in 'login', with: @pessoa.email
   fill_in 'password', with: 'senha'
@@ -15,31 +8,20 @@ Dado('que existe um usuário com perfil de participante logado no sistema') do
 end
 
 Dado('que esse usuário possui vínculo ativo em uma turma') do
-  pessoa_prof = Pessoa.create!(usuario: "prof123", password: "123", password_confirmation: "123", nome: "Professor Padrão")
+  pessoa_prof = Pessoa.create!(usuario: "prof123", email: "prof123@unb.br", password: "123", password_confirmation: "123", nome: "Professor Padrão")
   docente = Docente.create!(pessoa: pessoa_prof)
-
   @disciplina = Disciplina.create!(nome: "Engenharia de Software", codigo: "CIC0097")
   @turma = Turma.create!(codigo: "TA", disciplina: @disciplina, docente: docente)
-
   @turma.discentes << @discente
 end
 
 Dado('que existe um formulário de avaliação com status {string} para esta turma') do |status|
   @template = Template.create!(nome: "Avaliação Padrão", pessoa: @pessoa)
-
-  @formulario = Formulario.create!(
-    turma: @turma,
-    template: @template,
-    status: status.to_sym
-  )
+  @formulario = Formulario.create!(turma: @turma, template: @template, status: status.to_sym)
 end
 
 Dado('que o formulário possui questões onde a marcação {string} é verdadeira') do |obrigatoria|
-  @questao = Questao.create!(
-    formulario: @formulario,
-    enunciado: "Como você avalia a didática do professor?",
-    tipo_resposta: "texto"
-  )
+  @questao = Questao.create!(formulario: @formulario, enunciado: "Como você avalia a didática do professor?", tipo_resposta: "texto")
 end
 
 Quando('o participante acessa a página do questionário da sua turma') do
@@ -65,8 +47,7 @@ Então('o sistema deve salvar as respostas do participante no banco de dados') d
 end
 
 Então('deve registrar o momento exato do envio') do
-  resposta = Resposta.find_by(discente: @discente, questao: @questao)
-  expect(resposta.created_at).not_to be_nil
+  expect(Resposta.find_by(discente: @discente, questao: @questao).created_at).not_to be_nil
 end
 
 Então('deve redirecionar o usuário exibindo uma mensagem de agradecimento pela avaliação') do

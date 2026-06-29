@@ -5,6 +5,7 @@ end
 Dado('existem turmas cadastradas para o departamento {string}') do |nome_departamento|
   sufixo = nome_departamento.include?("CIC") ? "cic" : "mat"
   pessoa_prof = Pessoa.find_or_create_by!(usuario: "prof_#{sufixo}") do |p|
+    p.email = "prof_#{sufixo}@unb.br"
     p.password = "123"
     p.password_confirmation = "123"
     p.nome = "Professor #{sufixo}"
@@ -22,14 +23,7 @@ Dado('existem turmas cadastradas para o departamento {string}') do |nome_departa
 end
 
 Dado('existe um usuário {string} autenticado com perfil de {string}') do |nome_usuario, perfil|
-  @admin_cic = Pessoa.create!(
-    email: "admin_cic@unb.br",
-    password: "senha",
-    password_confirmation: "senha",
-    nome: nome_usuario,
-    usuario: "admin_cic",
-    admin: (perfil == "Administrador")
-  )
+  @admin_cic = Pessoa.create!(email: "admin_cic@unb.br", password: "senha", password_confirmation: "senha", nome: nome_usuario, usuario: "admin_cic", admin: (perfil == "Administrador"))
   visit login_path
   fill_in 'login', with: @admin_cic.email
   fill_in 'password', with: "senha"
@@ -40,9 +34,6 @@ Dado('o usuário {string} está vinculado institucionalmente ao departamento {st
   docente_admin = Docente.find_or_create_by!(pessoa: @admin_cic)
   docente_admin.update!(departamento: nome_departamento)
 end
-
-#-----HAPPY PATH ---
-
 
 Dado('que o {string} acessa o painel de gerenciamento de turmas do semestre atual') do |usuario|
   visit new_admin_formulario_path
@@ -59,8 +50,6 @@ end
 Então('a lista não deve exibir nenhuma disciplina referente ao departamento {string}, como {string}') do |depto, nome_disciplina|
   expect(page).not_to have_content(nome_disciplina)
 end
-
-#-----SAD PATH ---
 
 Dado('que a turma de {string} pertence ao departamento {string} e possui o ID de sistema {string}') do |disciplina, depto, id_turma|
   @turma_mat.update!(id: id_turma.to_i)

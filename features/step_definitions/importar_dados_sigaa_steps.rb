@@ -16,23 +16,21 @@ Dado('que o administrador possui permissão para importar dados do SIGAA via arq
   expect(@admin.admin?).to be_truthy
 end
 
-#-----HAPPY PATH ---
-
 Dado('que os arquivos selecionados são {string} e {string} e possuem dados válidos') do |arquivo1, arquivo2|
   allow(File).to receive(:exist?).and_return(true)
   allow(SigaaImportService).to receive(:processar).and_return(true)
 
   disciplina = Disciplina.create!(nome: "BANCOS DE DADOS", codigo: "CIC0097")
 
-  pessoa_docente = Pessoa.create!(usuario: "maristela_sigaa", password: "123", password_confirmation: "123", nome: "MARISTELA TERTO DE HOLANDA")
+  pessoa_docente = Pessoa.create!(usuario: "maristela_sigaa", email: "maristela_sigaa@unb.br", password: "123", password_confirmation: "123", nome: "MARISTELA TERTO DE HOLANDA")
   docente = Docente.create!(pessoa: pessoa_docente)
 
   turma = Turma.create!(codigo: "TA", disciplina: disciplina, docente: docente)
 
-  pessoa_aluno1 = Pessoa.create!(usuario: "ana_sigaa", password: "123", password_confirmation: "123", nome: "Ana Clara Jordao Perna")
+  pessoa_aluno1 = Pessoa.create!(usuario: "ana_sigaa", email: "ana_sigaa@unb.br", password: "123", password_confirmation: "123", nome: "Ana Clara Jordao Perna")
   Discente.create!(pessoa: pessoa_aluno1)
 
-  pessoa_aluno2 = Pessoa.create!(usuario: "andre_sigaa", password: "123", password_confirmation: "123", nome: "Andre Carvalho de Roure")
+  pessoa_aluno2 = Pessoa.create!(usuario: "andre_sigaa", email: "andre_sigaa@unb.br", password: "123", password_confirmation: "123", nome: "Andre Carvalho de Roure")
   Discente.create!(pessoa: pessoa_aluno2)
 end
 
@@ -63,8 +61,6 @@ end
 Então('deve exibir a mensagem {string}') do |mensagem|
   expect(page).to have_content(mensagem)
 end
-
-#-----SAD PATH ---
 
 Dado('que o administrador selecionou um arquivo corrompido ou que não segue a estrutura JSON esperada para turmas e participantes') do
   allow(File).to receive(:exist?).and_return(true)

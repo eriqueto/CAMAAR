@@ -4,6 +4,8 @@ SimpleCov.start 'rails' do
   add_filter '/db/'
   add_filter '/spec/'
   add_filter '/features/'
+  add_filter '/app/channels/'
+  add_filter '/app/mailers/'
 end
 
 require 'cucumber/rails'

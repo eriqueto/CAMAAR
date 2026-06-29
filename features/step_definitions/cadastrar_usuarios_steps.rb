@@ -17,14 +17,12 @@ end
 Dado('que os dados exportados do SIGAA estão disponíveis para processamento') do
   allow(File).to receive(:exist?).and_return(true)
 
-  pessoa_docente = Pessoa.create!(usuario: "prof_cadastro", password: "123", password_confirmation: "123", nome: "Professor Cadastro")
+  pessoa_docente = Pessoa.create!(usuario: "prof_cadastro", email: "prof_cadastro@unb.br", password: "123", password_confirmation: "123", nome: "Professor Cadastro")
   docente = Docente.create!(pessoa: pessoa_docente)
 
   disciplina = Disciplina.create!(nome: "Engenharia de Software", codigo: "CIC0001")
   @turma = Turma.create!(codigo: "TA", disciplina: disciplina, docente: docente)
 end
-
-#-----HAPPY PATH ---
 
 Dado('que o arquivo de importação contém um novo participante com e-mail e matrícula preenchidos corretamente') do
   allow(SigaaImportService).to receive(:processar) do
@@ -71,11 +69,8 @@ Então('o cadastro do usuário só deve ser efetivado de fato no sistema após a
   expect([login_path, "/login", root_path, avaliacoes_path]).to include(current_path)
 end
 
-#-----SAD PATH ---
-
 Dado('que o arquivo de importação contém um participante com dados inconsistentes, como a ausência de e-mail ou matrícula') do
   @total_pessoas_antes = Pessoa.count
-
   allow(SigaaImportService).to receive(:processar).and_return(true)
 end
 

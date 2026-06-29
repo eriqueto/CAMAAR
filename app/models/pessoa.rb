@@ -1,4 +1,5 @@
 class Pessoa < ApplicationRecord
+  validates :email, presence: true
   self.primary_key = 'usuario'
   has_secure_password 
   has_one :discente, foreign_key: 'pessoa_id', dependent: :destroy

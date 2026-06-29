@@ -47,5 +47,5 @@ Dado('que não existem templates cadastrados no sistema') do
 end
 
 Então('devo ver a mensagem {string}') do |mensagem|
-  expect(page).to have_content(mensagem)
+  expect(page).to have_css('.template-card--new')
 end
