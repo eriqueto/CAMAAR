@@ -14,6 +14,13 @@ RSpec.describe Template, type: :model do
         expect(template.save).to be true
       end
 
+      describe 'Associações' do
+        it 'verifica o relacionamento estrutural com template_questoes' do
+          template = Template.new(nome: 'Teste Estrutural', pessoa: @admin)
+          expect(template.template_questoes).to be_empty
+        end
+      end
+
       it 'permite a criação de questões aninhadas (nested attributes) junto com o template' do
         atributos_template = {
           nome: 'Pesquisa de Clima do Vestiário',
@@ -30,6 +37,7 @@ RSpec.describe Template, type: :model do
         expect(template.template_questoes.first.enunciado).to eq('Como está as filas do RU?')
       end
     end
+
 
     context 'Sad Path' do
       it 'é inválido tentar criar um template sem o autor (pessoa)' do

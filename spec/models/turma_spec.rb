@@ -31,6 +31,11 @@ RSpec.describe Turma, type: :model do
         expect(turma).not_to be_valid
         expect(turma.errors[:disciplina]).to be_present
       end
+
+      it 'é inválida sem código' do
+        turma = Turma.new(codigo: nil)
+        expect(turma).not_to be_valid
+      end
     end
   end
 end
