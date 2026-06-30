@@ -14,7 +14,7 @@ Dado('que o administrador esteja na tela de {string}') do |nome_tela|
 end
 
 Quando('selecionar a matéria {string} e a turma {string}') do |materia, turma_codigo|
-  first("input[type='checkbox']").set(true)
+  find("input[name='turma_ids[]']").check
 end
 
 Quando('definir o público-alvo como {string}') do |publico|
