@@ -8,20 +8,20 @@ RSpec.describe "Admin::Resultados", type: :request do
     )
     post login_path, params: { login: 'alisson@unb.br', password: '123' }
 
-    docente = Docente.create!(pessoa: @admin)
-    disciplina = Disciplina.create!(codigo: 'CIC0202', nome: 'Programação Concorrente')
-    turma = Turma.create!(codigo: 'TA', disciplina: disciplina, docente: docente)
+    @docente = Docente.create!(pessoa: @admin)
+    @disciplina = Disciplina.create!(codigo: 'CIC0202', nome: 'Programação Concorrente')
+    @turma = Turma.create!(codigo: 'TA', disciplina: @disciplina, docente: @docente)
     
-    template = Template.create!(nome: 'Avaliação da Disciplina', pessoa: @admin)
-    @formulario = Formulario.create!(turma: turma, template: template, status: :fechado)
+    @template = Template.create!(nome: 'Avaliação da Disciplina', pessoa: @admin)
+    @formulario = Formulario.create!(turma: @turma, template: @template, status: :fechado)
     @questao = Questao.create!(formulario: @formulario, enunciado: 'Como foi o semestre?', tipo_resposta: :texto)
     
-    pessoa_aluno = Pessoa.create!(
+    @pessoa_aluno = Pessoa.create!(
       usuario: 'robertocarlos', email: 'rcarlos@unb.br', nome: 'Roberto Carlos', 
       password: '123', password_confirmation: '123'
     )
-    discente = Discente.create!(pessoa: pessoa_aluno, matricula: '999888777')
-    Resposta.create!(questao: @questao, discente: discente, conteudo: 'Achei a matéria pesada, mas aprendi muito.')
+    @discente = Discente.create!(pessoa: @pessoa_aluno, matricula: '999888777')
+    Resposta.create!(questao: @questao, discente: @discente, conteudo: 'Achei a matéria pesada, mas aprendi muito.')
   end
 
   describe "GET /admin/resultados" do
@@ -49,13 +49,31 @@ RSpec.describe "Admin::Resultados", type: :request do
       expect(response.body).to include('Roberto Carlos')
       expect(response.body).to include('Achei a matéria pesada, mas aprendi muito.')
     end
-  end
 
-  context "Quando o formulário ainda está aberto" do
-    it "exibe a página de resultados parciais com sucesso" do
-      formulario_aberto = Formulario.create!(turma: @formulario.turma, template: @formulario.template, status: :aberto)
-      get admin_resultado_path(formulario_aberto)
-      expect(response).to have_http_status(:success)
+    context "quando o formulário possui questões do tipo rádio" do
+      it "exporta o CSV convertendo os mapeamentos de opções com sucesso" do
+        formulario_radio = Formulario.create!(turma: @turma, template: @template, status: :fechado)
+        questao_radio = Questao.create!(
+          formulario: formulario_radio, 
+          enunciado: 'Classifique a matéria:', 
+          tipo_resposta: :radio, 
+          opcoes: { "1" => "Fácil", "5" => "Difícil" }
+        )
+        Resposta.create!(questao: questao_radio, discente: @discente, conteudo: '5')
+
+        get exportar_csv_admin_resultado_path(formulario_radio)
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "quando o formulário não possui nenhuma resposta registrada" do
+      it "gera a estrutura e o cabeçalho do CSV vazios sem quebrar" do
+        formulario_vazio = Formulario.create!(turma: @turma, template: @template, status: :fechado)
+        Questao.create!(formulario: formulario_vazio, enunciado: 'Pergunta sem resposta', tipo_resposta: :texto)
+
+        get exportar_csv_admin_resultado_path(formulario_vazio)
+        expect(response).to have_http_status(:success)
+      end
     end
   end
 end

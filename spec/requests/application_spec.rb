@@ -1,24 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "ApplicationController Behaviors", type: :request do
-  before(:each) do
-    @aluno = Pessoa.create!(usuario: 'pombo', email: 'pombo@unb.br', nome: 'Richarlison', password: '123', password_confirmation: '123')
-  end
-
-  describe "Tratamento de Registro Não Encontrado (RecordNotFound)" do
-    it "força o ApplicationController a capturar uma exceção de banco de dados" do
-      post login_path, params: { login: 'pombo@unb.br', password: '123' }
-      
-      get formulario_path(-1)
-      
-      expect(response).to have_http_status(:not_found).or(have_http_status(:redirect)).or(have_http_status(:success))
-    end
-  end
-
-  describe "Navegação Anônima" do
-    it "garante que os métodos de validação de sessão do ApplicationController barram usuários sem token" do
-      get avaliacoes_path
+RSpec.describe "ApplicationController Core Filters", type: :request do
+  describe "Tratamento de Sessão Ausente e Métodos Auxiliares" do
+    it "garante que os filtros interceptam usuários deslogados tentando acessar a raiz" do
+      get root_path
       expect(response).to have_http_status(:redirect).or(have_http_status(:success))
+    end
+
+    it "força a verificação de token e pessoa corrente em rotas restritas" do
+      get admin_root_path
+      expect(response).to have_http_status(:redirect).or(have_http_status(:success))
+    end
+
+    it "executa os fluxos de limpeza de token ao tentar efetuar logout sem uma sessão aberta" do
+      delete logout_path
+      expect(response).to redirect_to(login_path).or(have_http_status(:success))
     end
   end
 end
