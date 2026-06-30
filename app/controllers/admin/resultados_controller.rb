@@ -9,20 +9,27 @@ class Admin::ResultadosController < Admin::BaseController
 
   def exportar_csv
     @formulario = Formulario.includes(questoes: { respostas: { discente: :pessoa } }).find(params[:id])
-    
+
     if @formulario.status != 'fechado'
       redirect_to admin_resultados_path, alert: "Relatórios só podem ser gerados para avaliações encerradas."
       return
     end
 
-    csv_data = CSV.generate(headers: true) do |csv|
+    send_data gerar_csv(@formulario), filename: "relatorio_turma_#{@formulario.turma.codigo}.csv", type: "text/csv"
+  end
+
+  private
+
+  def gerar_csv(formulario)
+    CSV.generate(headers: true) do |csv|
       csv << ["Aluno", "Matrícula", "Questão", "Resposta"]
-      @formulario.questoes.each do |questao|
-        questao.respostas.each do |resposta|
-          csv << [resposta.discente.pessoa.nome, resposta.discente.matricula, questao.enunciado, resposta.conteudo]
-        end
-      end
+      formulario.questoes.each { |questao| linhas_da_questao(questao).each { |linha| csv << linha } }
     end
-    send_data csv_data, filename: "relatorio_turma_#{@formulario.turma.codigo}.csv", type: "text/csv"
+  end
+
+  def linhas_da_questao(questao)
+    questao.respostas.map do |resposta|
+      [resposta.discente.pessoa.nome, resposta.discente.matricula, questao.enunciado, resposta.conteudo]
+    end
   end
 end
