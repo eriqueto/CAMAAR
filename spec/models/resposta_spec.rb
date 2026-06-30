@@ -3,15 +3,16 @@ require 'rails_helper'
 RSpec.describe Resposta, type: :model do
   before(:each) do
     #formulario
-    @pessoa_docente = Pessoa.create!(usuario: 'pep', nome: 'Pep Guardiola', password: '123', password_confirmation: '123')
+    @pessoa_docente = Pessoa.create!(usuario: 'pep', nome: 'Pep Guardiola', email: 'pep@unb.br', password: '123', password_confirmation: '123')
     docente = Docente.create!(pessoa: @pessoa_docente)
     disciplina = Disciplina.create!(codigo: 'CIC0234', nome: 'PAA')
     turma = Turma.create!(codigo: 'C1', disciplina: disciplina, docente: docente)
-    formulario = Formulario.create!(turma: turma, status: :aberto)
+    
+    template = Template.create!(nome: 'Template Resposta Spec', pessoa: @pessoa_docente)
+    formulario = Formulario.create!(turma: turma, template: template, status: :aberto)
     @questao = Questao.create!(formulario: formulario, enunciado: 'O que é a notação big O?', tipo_resposta: :texto)
-
     #aluno
-    @pessoa_aluno = Pessoa.create!(usuario: 'messi', nome: 'Lionel Messi', password: '123', password_confirmation: '123')
+    @pessoa_aluno = Pessoa.create!(usuario: 'messi', nome: 'Lionel Messi',email: 'messi@unb.br', password: '123', password_confirmation: '123')
     @discente = Discente.create!(pessoa: @pessoa_aluno, matricula: '101010')
   end
 

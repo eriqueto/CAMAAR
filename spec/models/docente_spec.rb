@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Docente, type: :model do
   before(:each) do
     # Thiago Silva dando aula de Lógica
-    @pessoa = Pessoa.create!(usuario: 'thiagosilva', nome: 'Thiago Silva', password: '123', password_confirmation: '123')
+    @pessoa = Pessoa.create!(usuario: 'thiagosilva', nome: 'Thiago Silva', email: 'thiago@unb.br', password: '123', password_confirmation: '123')
   end
 
   describe 'Criação e Associações' do

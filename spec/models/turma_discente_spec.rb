@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe TurmaDiscente, type: :model do
   before(:each) do
     #aluno
-    pessoa_aluno = Pessoa.create!(usuario: 'neymar', nome: 'Neymar Jr', password: '123', password_confirmation: '123')
+    pessoa_aluno = Pessoa.create!(usuario: 'neymar', nome: 'Neymar Jr', email: 'ney@unb.br',password: '123', password_confirmation: '123')
     @discente = Discente.create!(pessoa: pessoa_aluno, curso: 'Ciência da Computação', matricula: '10101010')
 
     #prof e turma
-    pessoa_prof = Pessoa.create!(usuario: 'tite', nome: 'Adenor Bachi', password: '123', password_confirmation: '123')
+    pessoa_prof = Pessoa.create!(usuario: 'tite', nome: 'Adenor Bachi', email: 'tite@unb.br',password: '123', password_confirmation: '123')
     docente = Docente.create!(pessoa: pessoa_prof, departamento: 'CIC')
     disciplina = Disciplina.create!(codigo: 'CIC0105', nome: 'Engenharia de Software')
     

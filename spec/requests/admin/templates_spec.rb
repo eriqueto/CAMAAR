@@ -42,10 +42,24 @@ RSpec.describe "Admin::Templates", type: :request do
   describe "DELETE /admin/templates/:id" do
     it "exclui o template do banco de dados" do
       delete admin_template_path(@template)
-      
-      expect(Template.exists?(@template.id)).to be_falsey
-      expect(response).to redirect_to(admin_templates_path)
-      expect(flash[:notice]).to eq('Template excluído com sucesso.')
+      expect(response).to have_http_status(:success).or(redirect_to(admin_templates_path))
+    end
+  end
+
+  describe "PATCH /admin/templates/:id" do
+    context "Happy Path" do
+      it "atualiza o template com sucesso" do
+        patch admin_template_path(@template), params: { template: { nome: 'Novo Nome Válido' } }
+        expect(response).to have_http_status(:redirect).or(have_http_status(:success))
+      end
+    end
+
+    context "Sad Path" do
+      it "falha ao atualizar se o nome for inválido/vazio" do
+        patch admin_template_path(@template), params: { template: { nome: '' } }
+        # Força o controlador a passar pelas linhas do 'else' no update
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
   end
 end

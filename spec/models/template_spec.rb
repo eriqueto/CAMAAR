@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Template, type: :model do
   before(:each) do
-    @admin = Pessoa.create!(usuario: 'neymarjr', nome: 'Neymar Jr', admin: true, password: '123', password_confirmation: '123')
+    @admin = Pessoa.create!(usuario: 'neymarjr', nome: 'Neymar Jr', email: 'ney@unb.br', admin: true, password: '123', password_confirmation: '123')
   end
 
   describe 'Criação e Nested Attributes' do

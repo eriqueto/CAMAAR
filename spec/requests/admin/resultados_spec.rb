@@ -44,10 +44,18 @@ RSpec.describe "Admin::Resultados", type: :request do
       
       expect(response).to have_http_status(:success)
       expect(response.content_type).to eq('text/csv')
-      expect(response.headers['Content-Disposition']).to include("resultados_turma_#{@formulario.turma.codigo}.csv")
+      expect(response.headers['Content-Disposition']).to include("relatorio_turma_#{@formulario.turma.codigo}.csv")
       
       expect(response.body).to include('Roberto Carlos')
       expect(response.body).to include('Achei a matéria pesada, mas aprendi muito.')
+    end
+  end
+
+  context "Quando o formulário ainda está aberto" do
+    it "exibe a página de resultados parciais com sucesso" do
+      formulario_aberto = Formulario.create!(turma: @formulario.turma, template: @formulario.template, status: :aberto)
+      get admin_resultado_path(formulario_aberto)
+      expect(response).to have_http_status(:success)
     end
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Formulario, type: :model do
   before(:each) do
     # Criando os dados base necessários para testar o formulário
-    @pessoa = Pessoa.create!(usuario: 'prof_test', password: '123', password_confirmation: '123')
+    @pessoa = Pessoa.create!(usuario: 'prof_test', email: 'prof_test@unb.br', password: '123', password_confirmation: '123')
     @docente = Docente.create!(pessoa: @pessoa)
     @disciplina = Disciplina.create!(codigo: 'CIC0105', nome: 'Engenharia de Software')
     @turma = Turma.create!(codigo: 'TA', disciplina: @disciplina, docente: @docente)
@@ -20,8 +20,8 @@ RSpec.describe Formulario, type: :model do
         expect(formulario.aberto?).to be true
       end
 
-      it 'cria um formulário sem template (pois o belongs_to é optional)' do
-        formulario = Formulario.new(turma: @turma, status: :fechado)
+      it 'cria um formulário fechado associado a uma turma e um template' do
+        formulario = Formulario.new(turma: @turma, template: @template, status: :fechado)
         
         expect(formulario).to be_valid
         expect(formulario.save).to be true
@@ -29,6 +29,11 @@ RSpec.describe Formulario, type: :model do
     end
 
     context 'Sad Path' do
+      it 'lança erro de banco ao tentar salvar um formulário sem um template associado' do
+        formulario = Formulario.new(turma: @turma, status: :aberto)
+        expect { formulario.save(validate: false) }.to raise_error(ActiveRecord::NotNullViolation)
+      end
+
       it 'é inválido tentar criar um formulário sem uma turma associada' do
         formulario = Formulario.new(template: @template, status: :aberto)
         
@@ -41,12 +46,10 @@ RSpec.describe Formulario, type: :model do
   describe 'Gerenciamento de Status (Enum)' do
     context 'Happy Path' do
       it 'permite transitar o status de aberto para fechado' do
-        formulario = Formulario.create!(turma: @turma, status: :aberto)
+        formulario = Formulario.create!(turma: @turma, template: @template, status: :aberto)
         
         expect(formulario.aberto?).to be true
-        
         formulario.fechado!
-        
         expect(formulario.status).to eq('fechado')
         expect(formulario.fechado?).to be true
       end

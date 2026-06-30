@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Turma, type: :model do
   before(:each) do
-    @pessoa_tecnico = Pessoa.create!(usuario: 'cr7', nome: 'Cristiano Ronaldo', password: '123', password_confirmation: '123')
+    @pessoa_tecnico = Pessoa.create!(usuario: 'cr7', nome: 'Cristiano Ronaldo', email: 'papaicris@unb.br', password: '123', password_confirmation: '123')
     @docente = Docente.create!(pessoa: @pessoa_tecnico, departamento: 'Ataque')
     @disciplina = Disciplina.create!(codigo: 'CIC0234', nome: 'PAA')
   end

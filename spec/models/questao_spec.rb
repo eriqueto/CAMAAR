@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Questao, type: :model do
   before(:each) do
-    @pessoa = Pessoa.create!(usuario: 'zidane', nome: 'Zinedine Zidane', password: '123', password_confirmation: '123')
+    @pessoa = Pessoa.create!(usuario: 'zidane', nome: 'Zinedine Zidane', email: 'zidane@unb.br', password: '123', password_confirmation: '123')
     @docente = Docente.create!(pessoa: @pessoa)
     @disciplina = Disciplina.create!(codigo: 'CIC002', nome: 'FTC')
     @turma = Turma.create!(codigo: 'B1', disciplina: @disciplina, docente: @docente)
-    @formulario = Formulario.create!(turma: @turma, status: :aberto)
+    
+    @template = Template.create!(nome: 'Template Questao Spec', pessoa: @pessoa)
+    @formulario = Formulario.create!(turma: @turma, template: @template, status: :aberto)
   end
 
   describe 'Criação e Serialização' do

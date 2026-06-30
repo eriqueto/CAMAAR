@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Discente, type: :model do
   before(:each) do
-    @pessoa = Pessoa.create!(usuario: 'vinijr', nome: 'Vinícius Júnior', password: '123', password_confirmation: '123')
+    @pessoa = Pessoa.create!(usuario: 'vinijr', nome: 'Vinícius Júnior', email: 'vini@unb.br', password: '123', password_confirmation: '123')
   end
 
   describe 'Criação e Associações' do

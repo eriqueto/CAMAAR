@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe TemplateQuestao, type: :model do
   before(:each) do
-    @pessoa = Pessoa.create!(usuario: 'casemiro', nome: 'Casemiro', password: '123', password_confirmation: '123')
+    @pessoa = Pessoa.create!(usuario: 'casemiro', nome: 'Casemiro', email: 'casemiro@unb.br', password: '123', password_confirmation: '123')
     @template = Template.create!(nome: 'Avaliação de Bancos de Dados', pessoa: @pessoa)
   end
 

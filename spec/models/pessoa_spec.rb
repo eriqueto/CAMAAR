@@ -34,20 +34,26 @@ RSpec.describe Pessoa, type: :model do
         expect(pessoa).not_to be_valid
         expect(pessoa.errors[:password]).to be_present
       end
+      
+      it 'é inválida sem um e-mail cadastrado' do
+        pessoa = Pessoa.new(usuario: '112233', nome: 'Teste E-mail', password: '123', password_confirmation: '123')
+        expect(pessoa).not_to be_valid
+        expect(pessoa.errors[:email]).to be_present
+      end
     end
   end
 
   describe 'Associações' do
     context 'Happy Path' do
       it 'pode ter um discente associado' do
-        pessoa = Pessoa.create!(usuario: '12345', password: '123', password_confirmation: '123')
+        pessoa = Pessoa.create!(usuario: '12345', email: 'aluno@unb.br', password: '123', password_confirmation: '123')
         discente = Discente.create!(pessoa: pessoa, matricula: '12345')
         
         expect(pessoa.reload.discente).to eq(discente)
       end
 
       it 'pode ter um docente associado' do
-        pessoa = Pessoa.create!(usuario: '67890', password: '123', password_confirmation: '123')
+        pessoa = Pessoa.create!(usuario: '67890', email: 'docente@unb.br', password: '123', password_confirmation: '123')
         docente = Docente.create!(pessoa: pessoa, departamento: 'CIC')
         
         expect(pessoa.reload.docente).to eq(docente)

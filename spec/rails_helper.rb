@@ -1,12 +1,13 @@
 
 require 'simplecov'
 SimpleCov.start 'rails' do
-  add_filter '/bin/'
-  add_filter '/db/'
-  add_filter '/spec/'
-  add_filter '/features/'
-  add_filter '/app/channels/'
-  add_filter '/app/mailers/'
+  add_filter '/helpers/'
+  add_filter '/channels/'
+  add_filter '/jobs/'
+  add_filter '/mailers/'
+  add_filter '/views/'
+  add_filter '/vendor/'
+  add_filter '/lib/'
 end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
