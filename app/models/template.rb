@@ -1,3 +1,5 @@
+# Representa um template de formulário criado por um administrador.
+# Um template contém questões modelo que são copiadas ao gerar formulários.
 class Template < ApplicationRecord
   belongs_to :pessoa, foreign_key: 'pessoa_id', primary_key: 'usuario'
   has_many :template_questoes, dependent: :destroy
